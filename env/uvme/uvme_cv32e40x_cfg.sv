@@ -96,7 +96,7 @@ class uvme_cv32e40x_cfg_c extends uvma_core_cntrl_cfg_c;
       soft enabled                         == 0;
       soft is_active                       == UVM_PASSIVE;
       soft scoreboarding_enabled           == 1;
-      soft cov_model_enabled               == 1;
+      soft cov_model_enabled               == 0;
       soft trn_log_enabled                 == 1;
       soft sys_clk_period                  == uvme_cv32e40x_sys_default_clk_period; // see uvme_cv32e40x_constants.sv
       soft buserr_scoreboarding_enabled    == 1;
