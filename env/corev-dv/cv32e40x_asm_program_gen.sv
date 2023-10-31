@@ -30,6 +30,75 @@ class cv32e40x_asm_program_gen extends corev_asm_program_gen;
     super.new(name);
   endfunction
 
+  virtual function void gen_program_header();
+    string instr[];
+    cv32e40s_instr_gen_config corev_cfg;
+    `DV_CHECK_FATAL($cast(corev_cfg, cfg), "Could not cast cfg into corev_cfg")
+
+    super.gen_program_header();
+
+    case ({corev_cfg.enable_dummy, corev_cfg.enable_hint})
+      2'b00: begin
+        // Not enabled
+      end
+      2'b01: begin
+        instr = {
+          $sformatf("lui x%0d, 0x0", cfg.gpr[0]),
+          $sformatf("ori x%0d, x%0d, 0x4", cfg.gpr[0], cfg.gpr[0]),
+          $sformatf("csrrs x0, 0xbf0, x%0d", cfg.gpr[0])
+        };
+        gen_section(get_label("enable_hint_instr", hart), instr);
+      end
+      2'b10: begin
+        instr = {
+          $sformatf("lui x%0d, 0xf0", cfg.gpr[0]),
+          $sformatf("ori x%0d, x%0d, 0x2", cfg.gpr[0], cfg.gpr[0]),
+          $sformatf("csrrs x0, 0xbf0, x%0d", cfg.gpr[0])
+        };
+        gen_section(get_label("enable_dummy_instr", hart), instr);
+      end
+      2'b11: begin
+        instr = {
+          $sformatf("lui x%0d, 0xf0", cfg.gpr[0]),
+          $sformatf("ori x%0d, x%0d, 0x6", cfg.gpr[0], cfg.gpr[0]),
+          $sformatf("csrrs x0, 0xbf0, x%0d", cfg.gpr[0])
+        };
+        gen_section(get_label("enable_dummy_hint_instr", hart), instr);
+      end
+    endcase
+
+    case ({corev_cfg.disable_pc_hardening, corev_cfg.disable_data_independent_timing})
+      2'b00: begin
+        // Nothing disabled
+      end
+      2'b01: begin
+        instr = {
+          $sformatf("lui x%0d, 0", cfg.gpr[0]),
+          $sformatf("ori x%0d, x%0d, 0x1", cfg.gpr[0], cfg.gpr[0]),
+          $sformatf("csrrc x0, 0xbf0, x%0d", cfg.gpr[0])
+        };
+        gen_section(get_label("disable_pc_hardening_data_ind_timing", hart), instr);
+      end
+      2'b10: begin
+        instr = {
+          $sformatf("lui x%0d, 0", cfg.gpr[0]),
+          $sformatf("ori x%0d, x%0d, 0x8", cfg.gpr[0], cfg.gpr[0]),
+          $sformatf("csrrc x0, 0xbf0, x%0d", cfg.gpr[0])
+        };
+        gen_section(get_label("disable_pc_hardening_data_ind_timing", hart), instr);
+      end
+      2'b11: begin
+        instr = {
+          $sformatf("lui x%0d, 0", cfg.gpr[0]),
+          $sformatf("ori x%0d, x%0d, 0x9", cfg.gpr[0], cfg.gpr[0]),
+          $sformatf("csrrc x0, 0xbf0, x%0d", cfg.gpr[0])
+        };
+        gen_section(get_label("disable_pc_hardening_data_ind_timing", hart), instr);
+      end
+    endcase
+
+  endfunction : gen_program_header
+
   virtual function void trap_vector_init(int hart);
     string instr[];
     privileged_reg_t trap_vec_reg;

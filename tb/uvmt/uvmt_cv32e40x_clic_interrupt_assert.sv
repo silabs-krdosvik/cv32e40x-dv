@@ -1885,7 +1885,7 @@ module uvmt_cv32e40x_clic_interrupt_assert
     // ------------------------------------------------------------------------
 
     property p_mtvt_alignment_correct;
-      accept_on(N_MTVT <= 6) // Pass if field does not exist
+      disable iff (!rst_ni || N_MTVT <= 6) // Disable if field does not exist
       mtvt_fields.base_n_0 == '0;
     endproperty : p_mtvt_alignment_correct
 
@@ -2942,6 +2942,32 @@ module uvmt_cv32e40x_clic_interrupt_assert
     else
       `uvm_error(info_tag,
         $sformatf("mret result state incorrect"));
+
+
+    //mret to umode clears mintthresh
+    a_mret_umode_clear_mintthresh: assert property (
+      rvfi_if.is_mret
+      ##1 rvfi_valid[->1]
+      ##0 rvfi_if.is_umode
+      |->
+      csr_mintthresh_if.rvfi_csr_rdata == 0
+    )
+    else
+      `uvm_error(info_tag,
+        $sformatf("mret to umode does not clear mintthresh"));
+
+    //dret to umode clears mintthresh
+    a_dret_umode_clear_mintthresh: assert property (
+      rvfi_if.is_dret
+      ##1 rvfi_valid[->1]
+      ##0 rvfi_if.is_umode
+      |->
+      csr_mintthresh_if.rvfi_csr_rdata == 0
+    )
+    else
+      `uvm_error(info_tag,
+        $sformatf("dret to umode does not clear mintthresh"));
+
 
     // this assert verifies that mode is correctly restored on an mret
     property p_mret_mode_mpp;
