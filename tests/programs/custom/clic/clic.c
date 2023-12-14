@@ -3145,7 +3145,6 @@ uint32_t mret_with_minhv(uint32_t index, uint8_t report_name) {
     mret
     addi %[check_val], zero, 42
     jal zero, 2f
-    .align 4
     1: .word(2f)
     .space 0x100, 0x0
     2: addi %[result], %[check_val], 0
