@@ -3,6 +3,9 @@ description: Default clic configuration for CV32E40X simulations
 compile_flags:
     +define+ZBA_ZBB_ZBC_ZBS
     +define+CLIC_EN
+    +define+IDV_INCLUDE_TRACE2BIN
+    +define+IDV_TRACE2LOG=1
+    +define+IDV_MAX_ERRORS=100
 ovpsim: >
     --override cpu/CLICLEVELS=256
     --override cpu/CLICXCSW=T
@@ -12,9 +15,12 @@ ovpsim: >
     --override cpu/CLIC_version=master
     --override cpu/externalCLIC=T
     --override cpu/mtvt_mask=0xffffffffffffff80
+    --trace
+    --tracechange
+    --traceshowicount
+    --monitornets
     #--trace
     #--tracechange
-    #--showoverrides
     #--trace --tracechange --traceshowicount --monitornets
 cflags: >
     -Wl,--nmagic
@@ -30,4 +36,7 @@ plusargs: >
     +enable_zcb_extension=1
     +enable_zcmt_extension=1
     +enable_zcmp_extension=1
+    +IDV_MAX_ERRORS=100
 cv_sw_march: rv32im_zba1p00_zbb1p00_zbc1p00_zbs1p00_zca_zcb_zcmp_zcmt_zicsr_zifencei
+
+

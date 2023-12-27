@@ -4,5 +4,6 @@ description: >
     CLIC directed test
 plusargs: >
   +clic_irq_clear_on_ack=0
+  +define+IDV_INCLUDE_TRACE2BIN
 cflags: >
   -mno-relax
