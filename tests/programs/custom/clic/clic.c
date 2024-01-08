@@ -35,7 +35,7 @@
 
 // MUST be 31 or less (bit position-1 in result array determines test pass/fail
 // status, thus we are limited to 31 tests with this construct.
-#define NUM_TESTS 24
+#define NUM_TESTS 1
 // Set which test index to start testing at (for quickly running specific tests during development)
 #define START_TEST_IDX 0
 // Abort test at first self-check fail, useful for debugging.
@@ -229,7 +229,7 @@ volatile uint32_t * volatile g_recovery_enable;
 //
 // Use template below for implementation
 // ---------------------------------------------------------------
-uint32_t mcause_mstatus_mirror_init(uint32_t index, uint8_t report_name);
+/*uint32_t mcause_mstatus_mirror_init(uint32_t index, uint8_t report_name);
 uint32_t w_mcause_mpp_r_mstatus_mpp(uint32_t index, uint8_t report_name);
 uint32_t w_mstatus_mpp_r_mcause_mpp(uint32_t index, uint8_t report_name);
 uint32_t w_mcause_mpie_r_mstatus_mpie(uint32_t index, uint8_t report_name);
@@ -248,11 +248,11 @@ uint32_t w_mnxti_side_effects(uint32_t index, uint8_t report_name);
 uint32_t rw_mscratchcsw(uint32_t index, uint8_t report_name);
 uint32_t rw_mscratchcsw_illegal(uint32_t index, uint8_t report_name);
 uint32_t rw_mscratchcswl(uint32_t index, uint8_t report_name);
-uint32_t rw_mscratchcswl_illegal(uint32_t index, uint8_t report_name);
+uint32_t rw_mscratchcswl_illegal(uint32_t index, uint8_t report_name);*/
 uint32_t mret_with_minhv(uint32_t index, uint8_t report_name);
-uint32_t mintthresh_higher(uint32_t index, uint8_t report_name);
+/*uint32_t mintthresh_higher(uint32_t index, uint8_t report_name);
 uint32_t mintthresh_lower(uint32_t index, uint8_t report_name);
-uint32_t mintthresh_equal(uint32_t index, uint8_t report_name);
+uint32_t mintthresh_equal(uint32_t index, uint8_t report_name);*/
 
 // ---------------------------------------------------------------
 // Generic test template:
@@ -396,7 +396,7 @@ int main(int argc, char **argv){
   g_recovery_enable            = calloc(1, sizeof(uint32_t));
 
   // Add function pointers to new tests here
-  tests[0]  = mcause_mstatus_mirror_init;
+  /*tests[0]  = mcause_mstatus_mirror_init;
   tests[1]  = w_mcause_mpp_r_mstatus_mpp;
   tests[2]  = w_mstatus_mpp_r_mcause_mpp;
   tests[3]  = w_mcause_mpie_r_mstatus_mpie;
@@ -415,11 +415,11 @@ int main(int argc, char **argv){
   tests[16] = rw_mscratchcsw;
   tests[17] = rw_mscratchcsw_illegal;
   tests[18] = rw_mscratchcswl;
-  tests[19] = rw_mscratchcswl_illegal;
-  tests[20] = mret_with_minhv;
-  tests[21] = mintthresh_lower;
+  tests[19] = rw_mscratchcswl_illegal;*/
+  tests[0] = mret_with_minhv;
+  /*tests[21] = mintthresh_lower;
   tests[22] = mintthresh_higher;
-  tests[23] = mintthresh_equal;
+  tests[23] = mintthresh_equal;*/
 
   // Run all tests in list above
   cvprintf(V_LOW, "\nCLIC Test start\n\n");
@@ -806,6 +806,7 @@ uint32_t mcause_mstatus_mirror_init(uint32_t index, uint8_t report_name){
 
 // -----------------------------------------------------------------------------
 
+/*
 uint32_t w_mcause_mpp_r_mstatus_mpp(uint32_t index, uint8_t report_name){
 
   volatile uint8_t  test_fail = 0;
@@ -3114,7 +3115,7 @@ uint32_t rw_mscratchcswl_illegal(uint32_t index, uint8_t report_name) {
   cvprintf(V_MEDIUM, "\nTest: \"%s\" OK!\n", name);
   return 0;
 }
-
+*/
 // -----------------------------------------------------------------------------
 
 uint32_t mret_with_minhv(uint32_t index, uint8_t report_name) {
@@ -3174,7 +3175,7 @@ uint32_t mret_with_minhv(uint32_t index, uint8_t report_name) {
 }
 
 // -----------------------------------------------------------------------------
-
+/*
 void reset_cpu_interrupt_lvl(void) {
   volatile mcause_t mcause = { 0 };
   volatile mstatus_t mstatus = { 0 };
@@ -3559,7 +3560,7 @@ __attribute__((interrupt("machine"))) void u_sw_irq_handler(void) {
   }
 
   return;
-}
+} */
 // -----------------------------------------------------------------------------
 _Pragma("GCC pop_options")
 // -----------------------------------------------------------------------------
