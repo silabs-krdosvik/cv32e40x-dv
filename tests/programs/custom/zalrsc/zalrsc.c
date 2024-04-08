@@ -73,7 +73,9 @@ void increment_mepc(void){
 }
 
 // Rewritten interrupt handler
-void trap_handler(void) {
+__attribute__((interrupt ("machine")))
+void  u_sw_irq_handler(void) {
+//void trap_handler(void) {
 
   switch(trap_handler_beh) {
 
@@ -101,7 +103,7 @@ void trap_handler(void) {
   }
 }
 
-__attribute__((interrupt ("machine")))
+/*__attribute__((interrupt ("machine")))
 void  u_sw_irq_handler(void) {
   __asm__ volatile (R"(
     # Backup "sp", use debug's own stack
@@ -155,7 +157,7 @@ void  u_sw_irq_handler(void) {
     # Done
     mret
   )");
-}
+}*/
 
 
 int main(int argc, char *argv[])
